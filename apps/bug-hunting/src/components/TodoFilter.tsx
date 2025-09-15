@@ -1,7 +1,17 @@
-const TodoFilter = ({ filter, onFilter, onClearCompleted }) => {
-  const handleFilterChange = (newFilter) => {
-    onFilter(newFilter)
-  }
+import type { TodoFilterOption } from '../types/todo';
+
+const TodoFilter = ({
+  filter,
+  onFilter,
+  onClearCompleted,
+}: {
+  filter: TodoFilterOption;
+  onFilter: (filter: TodoFilterOption) => void;
+  onClearCompleted: () => void;
+}) => {
+  const handleFilterChange = (newFilter: TodoFilterOption) => {
+    onFilter(newFilter);
+  };
   
   return (
     <div className="todo-filter">

@@ -2,11 +2,12 @@ import { useState } from 'react'
 import './App.css'
 import TodoList from './components/TodoList'
 import TodoForm from './components/TodoForm'
-import TodoFilter from './components/TodoFilter'
+import TodoFilter from './components/TodoFilter';
+import type { Todo, TodoFilterOption } from './types/todo';
 
 const App = () => {
-  const [todos, setTodos] = useState(null)
-  const [filter, setFilter] = useState()
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filter, setFilter] = useState<TodoFilterOption>('all');
   
   const addTodo = (text) => {
     todos.push({ text, completed: false })
