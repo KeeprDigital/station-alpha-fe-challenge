@@ -1,66 +1,63 @@
-import { useState } from 'react'
-import './App.css'
-import TodoList from './components/TodoList'
-import TodoForm from './components/TodoForm'
+import { useState, useMemo, useCallback } from 'react';
+import './App.css';
+import TodoList from './components/TodoList';
+import TodoForm from './components/TodoForm';
 import TodoFilter from './components/TodoFilter';
 import type { Todo, TodoFilterOption } from './types/todo';
 
 const App = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<TodoFilterOption>('all');
-  
-  const addTodo = (text) => {
-    todos.push({ text, completed: false })
-    setTodos(todos)
-  }
-  
-  const toggleTodo = (id) => {
-    const updatedTodos = todos.map(todo => {
-      if (todo.id == id) {
-        todo.completed = !todo.completed
-        return todo
-      }
-      return todo
-    })
-    setTodos(updatedTodos)
-  }
-  
-  const deleteTodo = () => {
-    const remainingTodos = todos.filter(todo => {
-      return todo.id !== id
-    })
-    setTodos(remainingTodos)
-  }
-  
-  const filteredTodos = () => {
+
+  const addTodo = useCallback((text: string) => {
+    const newTodo = { id: crypto.randomUUID(), text, completed: false };
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  }, []);
+
+  const toggleTodo = useCallback((id: string) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      })
+    );
+  }, []);
+
+  const deleteTodo = useCallback((id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  }, []);
+
+  const filteredTodos = useMemo(() => {
     if (filter === 'active') {
-      return todos.filter(todo => !todo.completed)
+      return todos.filter((todo) => !todo.completed);
     } else if (filter === 'completed') {
-      return todos.filter(todo => todo.completed)
+      return todos.filter((todo) => todo.completed);
     }
-    return todos
-  }
-  
-  function clearCompleted() {
-    const activeTodos = todos.filter(todo => !todo.completed)
-    setTodos(activeTodos)
-  }
-  
+    return todos;
+  }, [todos, filter]);
+
+  const clearCompleted = useCallback(() => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
+  }, []);
+
   return (
     <div className="app">
       <h1>Todo App</h1>
-      
-      <TodoForm />
-      
-      <TodoList 
-        todos={filteredTodos()} 
-        onToggle={toggleTodo} 
-        onDelete={deleteTodo} 
+      <TodoForm onAdd={addTodo} />
+      <TodoList
+        todos={filteredTodos}
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
       />
-      
-      <TodoFilter filter={filter} onClearCompleted={clearCompleted} />
+      <TodoFilter
+        filter={filter}
+        onFilter={setFilter}
+        onClearCompleted={clearCompleted}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
