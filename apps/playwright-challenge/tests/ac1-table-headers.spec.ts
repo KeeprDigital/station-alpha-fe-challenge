@@ -7,10 +7,20 @@ import { test, expect } from "@playwright/test";
  *   ID, Name, Username, Email, City, Phone, Website, and Company
  */
 test("AC1: Verify table headers display correctly", async ({ page }) => {
+  // Track API requests to verify they are made correctly
+  let apiRequestMade = false;
+  let requestMethod = "";
+  let requestUrl = "";
+
   // Mock API to return users BEFORE navigating
   await page.route(
     "https://jsonplaceholder.typicode.com/users",
     async (route) => {
+      const request = route.request();
+      apiRequestMade = true;
+      requestMethod = request.method();
+      requestUrl = request.url();
+
       await route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -63,9 +73,41 @@ test("AC1: Verify table headers display correctly", async ({ page }) => {
     "Company",
   ];
 
-  for (const header of expectedHeaders) {
-    await expect(
-      page.locator(`[data-testid="header-${header.toLowerCase()}"]`)
-    ).toHaveText(header);
+  // Verify API request was made correctly
+  expect(apiRequestMade).toBe(true);
+  expect(requestMethod).toBe("GET");
+  expect(requestUrl).toBe("https://jsonplaceholder.typicode.com/users");
+
+  // Verify all table headers are present and correctly ordered
+  const headerRow = page.locator("thead tr");
+  await expect(headerRow).toBeVisible();
+
+  for (let i = 0; i < expectedHeaders.length; i++) {
+    const header = expectedHeaders[i];
+    const headerCell = page.locator(
+      `[data-testid="header-${header.toLowerCase()}"]`
+    );
+
+    // Verify header text content
+    await expect(headerCell).toHaveText(header);
+
+    // Verify header is visible and properly positioned
+    await expect(headerCell).toBeVisible();
+
+    // Verify header accessibility attributes
+    await expect(headerCell).toHaveAttribute(
+      "data-testid",
+      `header-${header.toLowerCase()}`
+    );
   }
+
+  // Verify table structure and accessibility
+  const table = page.locator("table.user-table");
+  await expect(table).toBeVisible();
+  await expect(table.locator("thead")).toBeVisible();
+  await expect(table.locator("tbody")).toBeVisible();
+
+  // Verify header count matches expected
+  const headerCells = page.locator("thead th");
+  await expect(headerCells).toHaveCount(expectedHeaders.length);
 });
