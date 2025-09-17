@@ -1,6 +1,5 @@
 .app {
   text-align: center;
-  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -68,6 +67,12 @@ section {
   padding: 2rem;
 }
 
+.solution-demo .grid {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 1rem;
+}
+
 .placeholder-button {
   padding: 1rem 2rem;
   border: 2px dashed #d1d5db;
@@ -76,10 +81,110 @@ section {
   font-weight: 500;
 }
 
+/* Demo Showcase Styles */
+.demo-showcase {
+  background-color: #f8fafc;
+  border: 2px solid #e2e8f0;
+}
+
+.demo-showcase h2 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.demo-showcase p {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.demo-section {
+  margin-bottom: 3rem;
+}
+
+.demo-section:last-child {
+  margin-bottom: 0;
+}
+
+.demo-section h3 {
+  color: #334155;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.demo-item {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.demo-item h4 {
+  color: #475569;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.demo-note {
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #92400e;
+  font-style: italic;
+  text-align: center;
+}
+
+.demo-controls {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.demo-instructions {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .demo-item {
+    padding: 1rem;
+  }
+}
+
 .app-footer {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #e5e7eb;
   color: #6b7280;
   font-size: 0.875rem;
-} 
+}
