@@ -19,8 +19,8 @@
     "install-app:api": "cd apps/api-integration && npm install"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.1.0"
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6"
   },
   "engines": {
     "node": ">=14.0.0"
